@@ -1699,6 +1699,22 @@ void Character::on_concealed_changed()
   set_stealthsteps( 0 );
 }
 
+void Character::on_frozen_changed()
+{
+  if ( client )
+    send_move( client, this );
+  send_remove_character_to_nearby_cantsee( this );
+  send_create_mobile_to_nearby_cansee( this );
+}
+
+void Character::on_paralyzed_changed()
+{
+  if ( client )
+    send_move( client, this );
+  send_remove_character_to_nearby_cantsee( this );
+  send_create_mobile_to_nearby_cansee( this );
+}
+
 void Character::on_cmdlevel_changed()
 {
   send_remove_character_to_nearby_cantsee( this );
@@ -1732,6 +1748,8 @@ u8 Character::get_flag1( Network::Client* other_client ) const
 {
   // Breaks paperdoll
   u8 flag1 = 0;
+  if ( frozen() || paralyzed() )
+	flag1 |= Core::CHAR_FLAG1_FROZEN;
   if ( gender )
     flag1 |= Core::CHAR_FLAG1_GENDER;
   if ( ( poisoned() ) &&

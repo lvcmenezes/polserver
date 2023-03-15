@@ -2507,10 +2507,10 @@ BObjectImp* Character::set_script_member_id( const int id, int value )
     concealed( static_cast<unsigned char>( value ) );
     return new BLong( concealed() );
   case MBR_FROZEN:
-    mob_flags_.change( MOB_FLAGS::FROZEN, value ? true : false );
+    frozen( value ? true : false );
     return new BLong( frozen() );
   case MBR_PARALYZED:
-    mob_flags_.change( MOB_FLAGS::PARALYZED, value ? true : false );
+    paralyzed( value ? true : false );
     return new BLong( paralyzed() );
   case MBR_POISONED:
     poisoned( value ? true : false );

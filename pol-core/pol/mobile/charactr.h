@@ -635,7 +635,9 @@ public:
   void on_poison_changed();
   void on_hidden_changed();
   void on_concealed_changed();
-
+  void on_frozen_changed();
+  void on_paralyzed_changed();
+  
   bool warmode() const;
   void set_warmode( bool warmode );
   void set_stealthsteps( unsigned short newval );
@@ -652,7 +654,9 @@ public:
   bool is_concealed_from_me( const Character* chr ) const;
   bool invul() const;
   bool frozen() const;
+  void frozen( bool value );
   bool paralyzed() const;
+  void paralyzed( bool value );
   bool squelched() const;
   bool deafened() const;
   bool poisoned() const;
@@ -928,9 +932,27 @@ inline bool Character::frozen() const
   return mob_flags_.get( MOB_FLAGS::FROZEN );
 }
 
+inline void Character::frozen( bool value )
+{
+  if ( value != frozen() )
+  {
+    mob_flags_.change( MOB_FLAGS::FROZEN, value );
+    on_frozen_changed();
+  }
+}
+
 inline bool Character::paralyzed() const
 {
   return mob_flags_.get( MOB_FLAGS::PARALYZED );
+}
+
+inline void Character::paralyzed( bool value )
+{
+  if ( value != paralyzed() )
+  {
+    mob_flags_.change( MOB_FLAGS::PARALYZED, value );
+    on_paralyzed_changed();
+  }
 }
 
 inline bool Character::poisoned() const
