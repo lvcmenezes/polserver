@@ -50,8 +50,9 @@ enum UTEXTTYPE : u8
    Simple rectangular distance is used - if the x's differ by <= 18, and the y's differ
    by <= 18, you're in range.  If either is out of range, you're out.
    */
-#define RANGE_VISUAL 18
-#define RANGE_VISUAL_LARGE_BUILDINGS 18  // 31?
+#define MAX_VISUAL_RANGE 50
+#define RANGE_VISUAL 24
+#define RANGE_VISUAL_LARGE_BUILDINGS 24  // 31?
 
 
 const unsigned VALID_ITEM_COLOR_MASK = 0x0FFF;
