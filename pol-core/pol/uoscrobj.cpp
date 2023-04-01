@@ -2863,7 +2863,7 @@ BObjectImp* Character::script_method_id( const int id, Core::UOExecutor& ex )
     if ( newval != paralyzed() )
     {
       set_dirty();
-      mob_flags_.change( MOB_FLAGS::PARALYZED, newval );
+      paralyzed( newval );
       check_undamaged();
       Module::UOExecutorModule* uoexec =
           static_cast<Module::UOExecutorModule*>( ex.findModule( "UO" ) );
