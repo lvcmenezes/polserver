@@ -1650,7 +1650,7 @@ void Character::on_poison_changed()
   {
     if ( client )
     {
-      send_goxyz( client, client->chr );
+      send_move( client, this );
       // if poisoned send_goxyz handles 0x17 packet
       if ( !poisoned() )
         send_poisonhealthbar( client, client->chr );
@@ -1699,6 +1699,20 @@ void Character::on_concealed_changed()
   set_stealthsteps( 0 );
 }
 
+void Character::on_frozen_changed()
+{
+  if ( client )
+    send_move( client, this );
+  send_move_mobile_to_nearby_cansee( this );
+}
+
+void Character::on_paralyzed_changed()
+{
+  if ( client )
+    send_move( client, this );
+  send_move_mobile_to_nearby_cansee( this );
+}
+
 void Character::on_cmdlevel_changed()
 {
   send_remove_character_to_nearby_cantsee( this );
@@ -1732,6 +1746,8 @@ u8 Character::get_flag1( Network::Client* other_client ) const
 {
   // Breaks paperdoll
   u8 flag1 = 0;
+  if ( frozen() || paralyzed() )
+	flag1 |= Core::CHAR_FLAG1_FROZEN;
   if ( gender )
     flag1 |= Core::CHAR_FLAG1_GENDER;
   if ( ( poisoned() ) &&
@@ -1782,7 +1798,7 @@ void Character::apply_raw_damage_hundredths( unsigned int amount, Character* sou
   }
 
   if ( paralyzed() )
-    mob_flags_.remove( MOB_FLAGS::PARALYZED );
+    paralyzed( false );
 
   disable_regeneration_for( 2 );  // FIXME depend on amount?
 
@@ -2028,8 +2044,8 @@ void Character::resurrect()
 
   mob_flags_.remove( MOB_FLAGS::DEAD );
   mob_flags_.remove( MOB_FLAGS::WARMODE );
-  mob_flags_.remove( MOB_FLAGS::FROZEN );
-  mob_flags_.remove( MOB_FLAGS::PARALYZED );
+  frozen( false );
+  paralyzed( false );
 
   color = truecolor;
 
@@ -2193,8 +2209,8 @@ void Character::die()
 
   mob_flags_.set( MOB_FLAGS::DEAD );
   mob_flags_.remove( MOB_FLAGS::WARMODE );
-  mob_flags_.remove( MOB_FLAGS::FROZEN );
-  mob_flags_.remove( MOB_FLAGS::PARALYZED );
+  frozen( false );
+  paralyzed( false );
 
   UPDATE_CHECKPOINT();
   /* FIXME: corpse container difficulties.

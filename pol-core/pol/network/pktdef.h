@@ -102,6 +102,7 @@ const u8 CHAR_FLAG1_POISONED = 0x04;
 const u8 CHAR_FLAG1_FLYING = 0x04;    // since client 7.0
 const u8 CHAR_FLAG1_CANALTER = 0x02;  // only Paperdoll packet
 const u8 CHAR_FLAG1_GENDER = 0x02;
+const u8 CHAR_FLAG1_FROZEN = 0x01;
 const u8 CHAR_FLAG1_NORMAL = 0x00;
 
 #define RESPONSE_MAX_LEN 200

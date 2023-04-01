@@ -2507,10 +2507,10 @@ BObjectImp* Character::set_script_member_id( const int id, int value )
     concealed( static_cast<unsigned char>( value ) );
     return new BLong( concealed() );
   case MBR_FROZEN:
-    mob_flags_.change( MOB_FLAGS::FROZEN, value ? true : false );
+    frozen( value ? true : false );
     return new BLong( frozen() );
   case MBR_PARALYZED:
-    mob_flags_.change( MOB_FLAGS::PARALYZED, value ? true : false );
+    paralyzed( value ? true : false );
     return new BLong( paralyzed() );
   case MBR_POISONED:
     poisoned( value ? true : false );
@@ -2863,7 +2863,7 @@ BObjectImp* Character::script_method_id( const int id, Core::UOExecutor& ex )
     if ( newval != paralyzed() )
     {
       set_dirty();
-      mob_flags_.change( MOB_FLAGS::PARALYZED, newval );
+      paralyzed( newval );
       check_undamaged();
       Module::UOExecutorModule* uoexec =
           static_cast<Module::UOExecutorModule*>( ex.findModule( "UO" ) );
